@@ -7,7 +7,6 @@ namespace C_Light
 {
     class Program
     {
-        private static string MapPath = "map.txt";
 
         static void Main(string[] args)
         {
@@ -29,10 +28,10 @@ namespace C_Light
                     case ComandStartGame:
                         StartGame(map);
                         break;
+
                     case ComandExitGame:
                         isProgramOlpen = false;
                         break;
-
                 }
             }
         }
@@ -42,17 +41,22 @@ namespace C_Light
             Console.CursorVisible = false;
             char pacMan = 'ᗧ';
             int pacManPositionX = 1;
-            int pacManPositionY =32;
+            int pacManPositionY = 1;
+
 
             while (true)
             {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Blue;
+                DrawMap(map);
+
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.SetCursorPosition(pacManPositionX, pacManPositionY);
                 Console.Write(pacMan);
 
-                Console.ForegroundColor= ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Red;
                 ConsoleKeyInfo pressedKey = Console.ReadKey();
-                HandeleInput(pressedKey, ref pacManPositionX, ref pacManPositionY);
+                HandeleInput(pressedKey, ref pacManPositionX, ref pacManPositionY, map);
 
             }
         }
@@ -72,24 +76,42 @@ namespace C_Light
 
         }
 
-        private static void HandeleInput(ConsoleKeyInfo pressedKey, ref int pacManPositionX,ref int pacManPositionY)
+        private static void HandeleInput(ConsoleKeyInfo pressedKey, ref int pacManPositionX, ref int pacManPositionY, char[,] map)
         {
+            int[] direction = GetDirection(pressedKey);
+            int nextPacmanPositionX = pacManPositionX + direction[1];
+            int nextPacmanPositionY = pacManPositionY + direction[0];
+
+            if (map[nextPacmanPositionX, nextPacmanPositionY] == '·')
+            {
+
+                pacManPositionX = nextPacmanPositionX;
+                pacManPositionY = nextPacmanPositionY;
+            }
+        }
+
+        private static int[] GetDirection(ConsoleKeyInfo pressedKey)
+        {
+            int[] direction = { 0, 0 };
+
             if (pressedKey.Key == ConsoleKey.UpArrow)
             {
-                pacManPositionY--;
+                direction[0] = -1;
             }
             else if (pressedKey.Key == ConsoleKey.DownArrow)
             {
-                pacManPositionY++;
+                direction[0] = 1;
             }
             else if (pressedKey.Key == ConsoleKey.LeftArrow)
             {
-                pacManPositionX--;
+                direction[1] = -1;
             }
             else if (pressedKey.Key == ConsoleKey.RightArrow)
             {
-                pacManPositionX++;
+                direction[1] = 1;
             }
+
+            return direction;
         }
 
         private static char[,] ReadMap(string path)
