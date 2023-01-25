@@ -40,9 +40,6 @@ namespace C_Light
         private static void StartGame(char[,] map)
         {
             Console.CursorVisible = false;
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Blue;
-            DrawMap(map);
             char pacMan = 'ᗧ';
             int pacManPositionX = 1;
             int pacManPositionY =32;
@@ -62,7 +59,6 @@ namespace C_Light
 
         private static void DrawMap(char[,] map)
         {
-            Console.SetCursorPosition(0, 5);
 
             for (int x = 0; x < map.GetLength(0); x++)
             {
