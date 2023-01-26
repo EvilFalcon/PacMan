@@ -10,10 +10,10 @@ namespace C_Light
         {
 
             const string ComandStartGame = "1";
-            const string ComandExitGame = "3";
+            const string ComandExitGame = "2";
 
             bool isProgramOlpen = true;
-            char[,] map = ReadMap("map1.txt");
+            char[,] map = ReadMap("map.txt");
 
             Console.WriteLine($"{ComandStartGame}<--играть");
             Console.WriteLine($"{ComandExitGame}<--выход из игры ");
@@ -36,34 +36,51 @@ namespace C_Light
         private static void StartGame(char[,] map)
         {
             Console.CursorVisible = false;
-            char pacMan = '!';
+            char pacMan = '©';
             int pacManPositionX = 1;
             int pacManPositionY = 1;
+            int score = 0;
+            int winScore = 11225;
+            Console.Clear();
 
-                Console.Clear();
+            while (score!=winScore)
+            {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 DrawMap(map);
-
-            while (true)
-            {
+                DrowScore(score, map.GetLength(0));
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.SetCursorPosition(pacManPositionX, pacManPositionY);
                 Console.Write(pacMan);
 
-                Console.ForegroundColor = ConsoleColor.Red;
                 ConsoleKeyInfo pressedKey = Console.ReadKey();
-                HandeleInput(pressedKey, ref pacManPositionX, ref pacManPositionY, map);
+                HandeleInput(pressedKey, ref pacManPositionX, ref pacManPositionY, map, ref score);
 
             }
         }
 
+        private static void PickupItem(ref int score, char[,] map, int pacManPositionX, int pacManPositionY)
+        {
+            if (map[pacManPositionY, pacManPositionX] == '·')
+            {
+                score += 25;
+                map[pacManPositionY, pacManPositionX] = ' ';
+
+            }
+        }
+
+        private static void DrowScore(int score, int lengthMap)
+        {
+            Console.SetCursorPosition(lengthMap, 0);
+            Console.Write($"Рекорд:  {score}");
+        }
+
         private static void DrawMap(char[,] map)
         {
-
+            Console.SetCursorPosition(0, 0);
             for (int x = 0; x < map.GetLength(0); x++)
             {
-                for (int y = 0; y < map.GetLength(1);y++)
+                for (int y = 0; y < map.GetLength(1); y++)
                 {
                     Console.Write(map[x, y]);
                 }
@@ -73,17 +90,18 @@ namespace C_Light
 
         }
 
-        private static void HandeleInput(ConsoleKeyInfo pressedKey, ref int pacManPositionX, ref int pacManPositionY, char[,] map)
+        private static void HandeleInput(ConsoleKeyInfo pressedKey, ref int pacManPositionX, ref int pacManPositionY, char[,] map, ref int score)
         {
             int[] direction = GetDirection(pressedKey);
             int nextPacmanPositionX = pacManPositionX + direction[1];
             int nextPacmanPositionY = pacManPositionY + direction[0];
 
-            if (map[nextPacmanPositionY, nextPacmanPositionX] == ' ')
+            if (map[nextPacmanPositionY, nextPacmanPositionX] == ' ' || map[nextPacmanPositionY, nextPacmanPositionX] == '·')
             {
-
                 pacManPositionX = nextPacmanPositionX;
                 pacManPositionY = nextPacmanPositionY;
+                PickupItem(ref score, map, pacManPositionX, pacManPositionY);
+
             }
         }
 
