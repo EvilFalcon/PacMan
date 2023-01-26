@@ -1,0 +1,8 @@
+P:\C# уроки\C_Light\bin\Debug\C_Light.exe.config
+P:\C# уроки\C_Light\bin\Debug\C_Light.exe
+P:\C# уроки\C_Light\bin\Debug\C_Light.pdb
+P:\C# уроки\C_Light\obj\Debug\C_Light.csproj.AssemblyReference.cache
+P:\C# уроки\C_Light\obj\Debug\C_Light.csproj.SuggestedBindingRedirects.cache
+P:\C# уроки\C_Light\obj\Debug\C_Light.csproj.CoreCompileInputs.cache
+P:\C# уроки\C_Light\obj\Debug\C_Light.exe
+P:\C# уроки\C_Light\obj\Debug\C_Light.pdb
