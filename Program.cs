@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace C_Light
@@ -6,7 +6,7 @@ namespace C_Light
     class Program
     {
 
-        static void Main(string[] args)
+        static void Main()
         {
 
             const string ComandStartGame = "1";
@@ -35,16 +35,17 @@ namespace C_Light
 
         private static void StartGame(char[,] map)
         {
-            Console.CursorVisible = false;
             char pacMan = '©';
             int pacManPositionX = 1;
             int pacManPositionY = 1;
             int score = 0;
-            int winScore = 11225;
+            int winScore = 1000;
             Console.Clear();
 
-            while (score!=winScore)
+            while (score != winScore)
             {
+                Console.CursorVisible = false;
+
                 Console.ForegroundColor = ConsoleColor.Blue;
                 DrawMap(map);
                 DrowScore(score, map.GetLength(0));
@@ -55,8 +56,12 @@ namespace C_Light
 
                 ConsoleKeyInfo pressedKey = Console.ReadKey();
                 HandeleInput(pressedKey, ref pacManPositionX, ref pacManPositionY, map, ref score);
-
             }
+
+            Console.Clear();
+            Console.WriteLine("Вы победили");
+            Main();
+
         }
 
         private static void PickupItem(ref int score, char[,] map, int pacManPositionX, int pacManPositionY)
@@ -65,7 +70,6 @@ namespace C_Light
             {
                 score += 25;
                 map[pacManPositionY, pacManPositionX] = ' ';
-
             }
         }
 
@@ -101,7 +105,6 @@ namespace C_Light
                 pacManPositionX = nextPacmanPositionX;
                 pacManPositionY = nextPacmanPositionY;
                 PickupItem(ref score, map, pacManPositionX, pacManPositionY);
-
             }
         }
 
@@ -140,7 +143,6 @@ namespace C_Light
                 {
                     map[x, y] = fileMap[x][y];
                 }
-
             }
             return map;
 
@@ -155,12 +157,10 @@ namespace C_Light
                 if (line.Length > maxLines)
                 {
                     maxLines = line.Length;
-
                 }
             }
 
             return maxLines;
         }
-
     }
 }
