@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Security.Permissions;
 
 namespace C_Light
 {
@@ -15,8 +13,7 @@ namespace C_Light
             const string ComandExitGame = "3";
 
             bool isProgramOlpen = true;
-            char[,] map = null;
-            map = ReadMap("map.txt");
+            char[,] map = ReadMap("map1.txt");
 
             Console.WriteLine($"{ComandStartGame}<--играть");
             Console.WriteLine($"{ComandExitGame}<--выход из игры ");
@@ -39,16 +36,16 @@ namespace C_Light
         private static void StartGame(char[,] map)
         {
             Console.CursorVisible = false;
-            char pacMan = 'ᗧ';
+            char pacMan = '!';
             int pacManPositionX = 1;
             int pacManPositionY = 1;
 
-
-            while (true)
-            {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Blue;
                 DrawMap(map);
+
+            while (true)
+            {
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.SetCursorPosition(pacManPositionX, pacManPositionY);
@@ -66,7 +63,7 @@ namespace C_Light
 
             for (int x = 0; x < map.GetLength(0); x++)
             {
-                for (int y = 0; y < map.GetLength(1); y++)
+                for (int y = 0; y < map.GetLength(1);y++)
                 {
                     Console.Write(map[x, y]);
                 }
@@ -82,7 +79,7 @@ namespace C_Light
             int nextPacmanPositionX = pacManPositionX + direction[1];
             int nextPacmanPositionY = pacManPositionY + direction[0];
 
-            if (map[nextPacmanPositionX, nextPacmanPositionY] == '·')
+            if (map[nextPacmanPositionY, nextPacmanPositionX] == ' ')
             {
 
                 pacManPositionX = nextPacmanPositionX;
@@ -96,19 +93,19 @@ namespace C_Light
 
             if (pressedKey.Key == ConsoleKey.UpArrow)
             {
-                direction[0] = -1;
+                direction[0]--;
             }
             else if (pressedKey.Key == ConsoleKey.DownArrow)
             {
-                direction[0] = 1;
+                direction[0]++;
             }
             else if (pressedKey.Key == ConsoleKey.LeftArrow)
             {
-                direction[1] = -1;
+                direction[1]--;
             }
             else if (pressedKey.Key == ConsoleKey.RightArrow)
             {
-                direction[1] = 1;
+                direction[1]++;
             }
 
             return direction;
