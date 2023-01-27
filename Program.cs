@@ -38,6 +38,7 @@ namespace C_Light
             int pacManPositionX = 1;
             int pacManPositionY = 1;
             int score = 0;
+            int coinScore = 25;
             int winScore = 1000;
 
             Console.Clear();
@@ -54,7 +55,7 @@ namespace C_Light
                 Console.Write(pacMan);
 
                 ConsoleKeyInfo pressedKey = Console.ReadKey();
-                HandeleInput(pressedKey, ref pacManPositionX, ref pacManPositionY, map, ref score);
+                HandeleInput(pressedKey, ref pacManPositionX, ref pacManPositionY, map, ref score, coinScore);
             }
 
             Console.Clear();
@@ -62,12 +63,13 @@ namespace C_Light
             Console.ReadKey();
         }
 
-        private static int PickupItem(int score, char[,] map, int pacManPositionX, int pacManPositionY)
+        private static int PickupItem(int score, char[,] map, int pacManPositionX, int pacManPositionY, char emptySpaceCharacter, char coinSymbol, int coinScore)
         {
-            if (map[pacManPositionY, pacManPositionX] == '·')
+
+            if (map[pacManPositionY, pacManPositionX] == coinSymbol)
             {
-                score += 25;
-                map[pacManPositionY, pacManPositionX] = ' ';
+                score += coinScore;
+                map[pacManPositionY, pacManPositionX] = emptySpaceCharacter;
             }
 
             return score;
@@ -95,17 +97,19 @@ namespace C_Light
             }
         }
 
-        private static void HandeleInput(ConsoleKeyInfo pressedKey, ref int pacManPositionX, ref int pacManPositionY, char[,] map, ref int score)
+        private static void HandeleInput(ConsoleKeyInfo pressedKey, ref int pacManPositionX, ref int pacManPositionY, char[,] map, ref int score, int coinScore)
         {
+            char emptySpaceCharacter = ' ';
+            char coinSymbol = '·';
             int[] direction = GetDirection(pressedKey);
             int nextPacmanPositionX = pacManPositionX + direction[1];
             int nextPacmanPositionY = pacManPositionY + direction[0];
 
-            if (map[nextPacmanPositionY, nextPacmanPositionX] == ' ' || map[nextPacmanPositionY, nextPacmanPositionX] == '·')
+            if (map[nextPacmanPositionY, nextPacmanPositionX] == emptySpaceCharacter || map[nextPacmanPositionY, nextPacmanPositionX] == coinSymbol)
             {
                 pacManPositionX = nextPacmanPositionX;
                 pacManPositionY = nextPacmanPositionY;
-                score = PickupItem(score, map, pacManPositionX, pacManPositionY);
+                score = PickupItem(score, map, pacManPositionX, pacManPositionY, emptySpaceCharacter, coinSymbol, coinScore);
             }
         }
 
