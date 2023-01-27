@@ -5,21 +5,20 @@ namespace C_Light
 {
     class Program
     {
-
         static void Main()
         {
-
             const string ComandStartGame = "1";
             const string ComandExitGame = "2";
 
             bool isProgramOlpen = true;
-            char[,] map = ReadMap("map.txt");
-
-            Console.WriteLine($"{ComandStartGame}<--играть");
-            Console.WriteLine($"{ComandExitGame}<--выход из игры ");
 
             while (isProgramOlpen)
             {
+                char[,] map = ReadMap("map.txt");
+
+                Console.WriteLine($"{ComandStartGame}<--играть");
+                Console.WriteLine($"{ComandExitGame}<--выход из игры ");
+
                 switch (Console.ReadLine())
                 {
                     case ComandStartGame:
@@ -40,15 +39,15 @@ namespace C_Light
             int pacManPositionY = 1;
             int score = 0;
             int winScore = 1000;
+
             Console.Clear();
 
             while (score != winScore)
             {
                 Console.CursorVisible = false;
 
-                Console.ForegroundColor = ConsoleColor.Blue;
                 DrawMap(map);
-                DrowScore(score, map.GetLength(0));
+                DrawScore(score, map.GetLength(0));
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.SetCursorPosition(pacManPositionX, pacManPositionY);
@@ -60,20 +59,21 @@ namespace C_Light
 
             Console.Clear();
             Console.WriteLine("Вы победили");
-            Main();
-
+            Console.ReadKey();
         }
 
-        private static void PickupItem(ref int score, char[,] map, int pacManPositionX, int pacManPositionY)
+        private static int PickupItem(int score, char[,] map, int pacManPositionX, int pacManPositionY)
         {
             if (map[pacManPositionY, pacManPositionX] == '·')
             {
                 score += 25;
                 map[pacManPositionY, pacManPositionX] = ' ';
             }
+
+            return score;
         }
 
-        private static void DrowScore(int score, int lengthMap)
+        private static void DrawScore(int score, int lengthMap)
         {
             Console.SetCursorPosition(lengthMap, 0);
             Console.Write($"Рекорд:  {score}");
@@ -81,7 +81,9 @@ namespace C_Light
 
         private static void DrawMap(char[,] map)
         {
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.SetCursorPosition(0, 0);
+
             for (int x = 0; x < map.GetLength(0); x++)
             {
                 for (int y = 0; y < map.GetLength(1); y++)
@@ -91,7 +93,6 @@ namespace C_Light
 
                 Console.WriteLine();
             }
-
         }
 
         private static void HandeleInput(ConsoleKeyInfo pressedKey, ref int pacManPositionX, ref int pacManPositionY, char[,] map, ref int score)
@@ -104,27 +105,32 @@ namespace C_Light
             {
                 pacManPositionX = nextPacmanPositionX;
                 pacManPositionY = nextPacmanPositionY;
-                PickupItem(ref score, map, pacManPositionX, pacManPositionY);
+                score = PickupItem(score, map, pacManPositionX, pacManPositionY);
             }
         }
 
         private static int[] GetDirection(ConsoleKeyInfo pressedKey)
         {
+            ConsoleKey moveUpCommand = ConsoleKey.UpArrow;
+            ConsoleKey moveDownCommand = ConsoleKey.DownArrow;
+            ConsoleKey moveLeftCommand = ConsoleKey.LeftArrow;
+            ConsoleKey moveRightCommand = ConsoleKey.RightArrow;
+
             int[] direction = { 0, 0 };
 
-            if (pressedKey.Key == ConsoleKey.UpArrow)
+            if (pressedKey.Key == moveUpCommand)
             {
                 direction[0]--;
             }
-            else if (pressedKey.Key == ConsoleKey.DownArrow)
+            else if (pressedKey.Key == moveDownCommand)
             {
                 direction[0]++;
             }
-            else if (pressedKey.Key == ConsoleKey.LeftArrow)
+            else if (pressedKey.Key == moveLeftCommand)
             {
                 direction[1]--;
             }
-            else if (pressedKey.Key == ConsoleKey.RightArrow)
+            else if (pressedKey.Key == moveRightCommand)
             {
                 direction[1]++;
             }
@@ -144,8 +150,8 @@ namespace C_Light
                     map[x, y] = fileMap[x][y];
                 }
             }
-            return map;
 
+            return map;
         }
 
         private static int GetMaxLengthOfLines(string[] lines)
