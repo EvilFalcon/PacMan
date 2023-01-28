@@ -50,17 +50,23 @@ namespace C_Light
                 DrawMap(map);
                 DrawScore(score, map.GetLength(0));
 
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.SetCursorPosition(pacManPositionX, pacManPositionY);
-                Console.Write(pacMan);
+                DrawPacman(pacMan, pacManPositionX, pacManPositionY);
 
                 ConsoleKeyInfo pressedKey = Console.ReadKey();
-                HandeleInput(pressedKey, ref pacManPositionX, ref pacManPositionY, map, ref score, coinScore);
+                HandelInput(pressedKey, ref pacManPositionX, ref pacManPositionY, map, ref score, coinScore);
+                HandelInput(pressedKey, ref pacManPositionX, ref pacManPositionY, map, ref score, coinScore);
             }
 
             Console.Clear();
             Console.WriteLine("Вы победили");
             Console.ReadKey();
+        }
+
+        private static void DrawPacman(char pacMan, int pacManPositionX, int pacManPositionY)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.SetCursorPosition(pacManPositionX, pacManPositionY);
+            Console.Write(pacMan);
         }
 
         private static int PickupItem(int score, char[,] map, int pacManPositionX, int pacManPositionY, char emptySpaceCharacter, char coinSymbol, int coinScore)
@@ -97,9 +103,9 @@ namespace C_Light
             }
         }
 
-        private static void HandeleInput(ConsoleKeyInfo pressedKey, ref int pacManPositionX, ref int pacManPositionY, char[,] map, ref int score, int coinScore)
+        private static void HandelInput(ConsoleKeyInfo pressedKey, ref int pacManPositionX, ref int pacManPositionY, char[,] map, ref int score, int coinScore)
         {
-                       int positionX = 0;
+            int positionX = 0;
             int positionY = 0;
             char emptySpaceCharacter = ' ';
             char coinSymbol = '·';
