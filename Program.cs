@@ -99,11 +99,13 @@ namespace C_Light
 
         private static void HandeleInput(ConsoleKeyInfo pressedKey, ref int pacManPositionX, ref int pacManPositionY, char[,] map, ref int score, int coinScore)
         {
+                       int positionX = 0;
+            int positionY = 0;
             char emptySpaceCharacter = ' ';
             char coinSymbol = '·';
-            int[] direction = GetDirection(pressedKey);
-            int nextPacmanPositionX = pacManPositionX + direction[1];
-            int nextPacmanPositionY = pacManPositionY + direction[0];
+            GetDirection(pressedKey, ref positionX, ref positionY);
+            int nextPacmanPositionX = pacManPositionX + positionX;
+            int nextPacmanPositionY = pacManPositionY + positionY;
 
             if (map[nextPacmanPositionY, nextPacmanPositionX] == emptySpaceCharacter || map[nextPacmanPositionY, nextPacmanPositionX] == coinSymbol)
             {
@@ -113,33 +115,29 @@ namespace C_Light
             }
         }
 
-        private static int[] GetDirection(ConsoleKeyInfo pressedKey)
+        private static void GetDirection(ConsoleKeyInfo pressedKey, ref int positionX, ref int positionY)
         {
             ConsoleKey moveUpCommand = ConsoleKey.UpArrow;
             ConsoleKey moveDownCommand = ConsoleKey.DownArrow;
             ConsoleKey moveLeftCommand = ConsoleKey.LeftArrow;
             ConsoleKey moveRightCommand = ConsoleKey.RightArrow;
 
-            int[] direction = { 0, 0 };
-
             if (pressedKey.Key == moveUpCommand)
             {
-                direction[0]--;
+                positionY--;
             }
             else if (pressedKey.Key == moveDownCommand)
             {
-                direction[0]++;
+                positionY++;
             }
             else if (pressedKey.Key == moveLeftCommand)
             {
-                direction[1]--;
+                positionX--;
             }
             else if (pressedKey.Key == moveRightCommand)
             {
-                direction[1]++;
+                positionX++;
             }
-
-            return direction;
         }
 
         private static char[,] ReadMap(string path)
