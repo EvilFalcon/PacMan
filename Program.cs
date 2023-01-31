@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace C_Light
+namespace PacMan
 {
     class Program
     {
